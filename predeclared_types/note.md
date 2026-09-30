@@ -23,4 +23,5 @@ if (ptr != nullptr) { // Evaluates to true because it's not null!
 
 ### Explicit Type Conversion
 - Automatically converting from one to another when needed is called `automatic type promotion`, Go doesn't allow automatic type promotion
-- 
+- need to use type conversion when variable types do not match
+
