@@ -25,3 +25,10 @@ if (ptr != nullptr) { // Evaluates to true because it's not null!
 - Automatically converting from one to another when needed is called `automatic type promotion`, Go doesn't allow automatic type promotion
 - need to use type conversion when variable types do not match
 
+### Literal Are Untyped
+- 
+
+### var Versus := 
+- Using := has one limitation. we can not declaring a variable at the package level, we
+must use var because := is not legal outside of functions.
+
