@@ -1,5 +1,9 @@
 package cleanup
 
+import (
+	"fmt"
+)
+
 // Resource is anything that must be closed after use: a file, a DB row set,
 // an HTTP response body.
 type Resource interface {
@@ -20,12 +24,28 @@ type Opener func(name string) (Resource, error)
 func SumSizes(open Opener, names []string) (int, error) {
 	total := 0
 	for _, name := range names {
-		r, err := open(name)
+		size, err := sizeOf(open, name)
 		if err != nil {
 			return 0, err
 		}
-		defer r.Close()
-		total += r.Size()
+		total += size
 	}
 	return total, nil
+}
+
+func sizeOf(open Opener, name string) (size int, err error) {
+	r, err := open(name)
+	if err != nil {
+		return 0, fmt.Errorf("failed name %s: %w", name, err)
+
+	}
+	defer func() {
+		err = r.Close()
+		if err != nil {
+			err = fmt.Errorf("failed at name %s, %w", name, err)
+			size = 0
+		}
+	}()
+
+	return r.Size(), nil
 }
